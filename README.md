@@ -1,2 +1,2 @@
 # WinterProject
-a video game.
+a cool video game.
