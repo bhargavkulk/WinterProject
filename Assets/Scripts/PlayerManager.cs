@@ -11,6 +11,8 @@ public class PlayerManager : MonoBehaviour {
     private Vector2 mousePos;
     private bool isDashing;
     private Vector2 dashDir;
+    private bool isAttacking;
+    private AttackCollider attackCollider;
 
     public float movementSpeed = 4f;
     public float dampingCoeff = 2f;
@@ -26,6 +28,9 @@ public class PlayerManager : MonoBehaviour {
 
         velocity = Vector2.zero;
         isDashing = false;
+        isAttacking = false;
+
+        attackCollider = transform.GetChild(0).gameObject.GetComponent<AttackCollider>();
     }
 
     void Update() {
@@ -34,12 +39,17 @@ public class PlayerManager : MonoBehaviour {
     }
 
     private void FixedUpdate() { 
-        if(Input.GetMouseButtonDown(0)) {
+        if(Input.GetKeyDown(KeyCode.Space)) {
             isDashing = true;
             dashDir = ((Vector2)mousePos - (Vector2)transform.position).normalized;
         }
 
-        if(!isDashing) {
+        if(isDashing) {
+            Dash(dashDir);
+        } else {
+            if(Input.GetMouseButtonDown(0)) {
+                Attack();
+            }
             if(input == Vector2.zero) {
                 SlowDown();
             } else {
@@ -48,8 +58,6 @@ public class PlayerManager : MonoBehaviour {
 
             Move();
             RotateWithMouse();
-        } else {
-            Dash(dashDir);
         }
     }
 
@@ -81,5 +89,12 @@ public class PlayerManager : MonoBehaviour {
         Vector2 newPos = (Vector2)transform.position + dashFactor * dashDir;
         transform.position = newPos;
         isDashing = false;
+    }
+
+    private void Attack() {
+        var currTriggerList = attackCollider.TriggerList;
+        foreach (var enemy in attackCollider.TriggerList) {
+            Destroy(enemy.gameObject);
+        }
     }
 }
