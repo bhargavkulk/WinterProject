@@ -11,8 +11,8 @@ public class PlayerManager : MonoBehaviour {
     private Vector2 mousePos;
     private bool isDashing;
     private Vector2 dashDir;
-    private bool isAttacking;
     private AttackCollider attackCollider;
+    private Vector2 lookDir;
 
     public float movementSpeed = 4f;
     public float dampingCoeff = 2f;
@@ -28,14 +28,13 @@ public class PlayerManager : MonoBehaviour {
 
         velocity = Vector2.zero;
         isDashing = false;
-        isAttacking = false;
-
         attackCollider = transform.GetChild(0).gameObject.GetComponent<AttackCollider>();
     }
 
     void Update() {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        lookDir = mousePos - (Vector2)transform.position;
     }
 
     private void FixedUpdate() { 
@@ -49,7 +48,7 @@ public class PlayerManager : MonoBehaviour {
         } else {
             if(Input.GetMouseButtonDown(0)) {
                 Attack();
-            }
+        }
             if(input == Vector2.zero) {
                 SlowDown();
             } else {
@@ -93,8 +92,18 @@ public class PlayerManager : MonoBehaviour {
 
     private void Attack() {
         var currTriggerList = attackCollider.TriggerList;
-        foreach (var enemy in attackCollider.TriggerList) {
-            Destroy(enemy.gameObject);
+        foreach (var other in attackCollider.TriggerList) {
+            if(other.gameObject.tag == "enemy") {
+                Destroy(other.gameObject);
+            } else if(other.gameObject.tag == "bullet") {
+                Bullet bullet = other.gameObject.GetComponent<Bullet>();
+                bullet.direction = lookDir.normalized;
+                bullet.isDeflected = true;
+            }
         }
+    }
+
+    IEnumerator AttackTime() {
+        yield return new WaitForSeconds(1f);
     }
 }
