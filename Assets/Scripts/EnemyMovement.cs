@@ -19,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector2 direction = player.position - transform.position;
+        Vector2 direction = GameObject.FindWithTag("Player").transform.position - transform.position;
         direction.Normalize();
         movement = direction;
 
