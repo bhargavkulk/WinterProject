@@ -3,7 +3,11 @@ guid: c25f49fddaadf4e34a3f673b434dba3b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - enemyPrefab: {instanceID: 0}
+  - shotgunGuyPrefab: {fileID: 6333708071569749089, guid: aa2ad86ee8e3980428c46785aabeebaa,
+      type: 3}
+  - g: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
