@@ -18,6 +18,9 @@ public class PlayerManager : MonoBehaviour {
     public float dampingCoeff = 2f;
     public float maxSpeed = 16f;
     public float dashFactor = 0.5f;
+    public float health = 100f;
+    public float bulletHealthDecrease = 5f;
+    public SimpleHealthBar healthBar;
 
     void Start() {
         float xLimit = Camera.main.aspect * Camera.main.orthographicSize - transform.localScale.x / 2f;
@@ -96,13 +99,27 @@ public class PlayerManager : MonoBehaviour {
             if(other.gameObject.tag == "enemy") {
                 Destroy(other.gameObject);
             } else if(other.gameObject.tag == "bullet") {
+                health += 10f;
+                healthBar.UpdateBar(health, 100f);
                 Bullet bullet = other.gameObject.GetComponent<Bullet>();
                 bullet.direction = lookDir.normalized;
                 bullet.isDeflected = true;
             }
         }
     }
-
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.tag == "bullet"){
+            health-= bulletHealthDecrease;
+            healthBar.UpdateBar(health, 100f);
+            if(health == 0f)
+            {
+                GameOver();
+            }
+        }
+    }
+    private void GameOver(){
+        print("dead");
+    }
     IEnumerator AttackTime() {
         yield return new WaitForSeconds(1f);
     }

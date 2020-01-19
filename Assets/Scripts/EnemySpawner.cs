@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
+    public GameObject shotgunGuyPrefab;
     float timer;
     public float SpawnInterval = 5f;
     public float inRadius = 1;
