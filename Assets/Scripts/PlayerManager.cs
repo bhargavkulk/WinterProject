@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -118,7 +119,7 @@ public class PlayerManager : MonoBehaviour {
         }
     }
     private void GameOver(){
-        print("dead");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     IEnumerator AttackTime() {
         yield return new WaitForSeconds(1f);
