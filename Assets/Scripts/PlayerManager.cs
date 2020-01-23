@@ -92,6 +92,7 @@ public class PlayerManager : MonoBehaviour {
         Vector2 newPos = (Vector2)transform.position + dashFactor * dashDir;
         transform.position = newPos;
         isDashing = false;
+        FindObjectOfType<AudioManager>().Play("Dash");
     }
 
     private void Attack() {
@@ -99,26 +100,33 @@ public class PlayerManager : MonoBehaviour {
         foreach (var other in attackCollider.TriggerList) {
             if(other.gameObject.tag == "enemy") {
                 Destroy(other.gameObject);
+                FindObjectOfType<AudioManager>().Play("Kill");
             } else if(other.gameObject.tag == "bullet") {
-                health += 10f;
+                health+= bulletHealthDecrease;
                 healthBar.UpdateBar(health, 100f);
                 Bullet bullet = other.gameObject.GetComponent<Bullet>();
                 bullet.direction = lookDir.normalized;
                 bullet.isDeflected = true;
+                FindObjectOfType<AudioManager>().Play("Deflect");
             }
         }
     }
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.tag == "bullet"){
-            health-= bulletHealthDecrease;
-            healthBar.UpdateBar(health, 100f);
-            if(health == 0f)
+            Bullet bullet = other.gameObject.GetComponent<Bullet>();
+            if(bullet.isDeflected == false)
             {
-                GameOver();
+                health-= bulletHealthDecrease;
+                healthBar.UpdateBar(health, 100f);
+                if(health == 0f)
+                {
+                    GameOver();
+                }
             }
         }
     }
     private void GameOver(){
+        FindObjectOfType<AudioManager>().Play("Died");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     IEnumerator AttackTime() {
