@@ -20,9 +20,13 @@ public class ShotgunGuy : MonoBehaviour
     private Vector2 directionR2;
     private bool isMoving;
     private float nextToggle;
-    // Start is called before the first frame update
-    void Start()
-    {
+    private float xLimit;
+    private float yLimit;
+
+    void Start() {
+        xLimit = Camera.main.aspect * Camera.main.orthographicSize - transform.localScale.x / 2f;
+        yLimit = Camera.main.orthographicSize - transform.localScale.y / 2f;
+
         player = GameObject.FindWithTag("Player").transform;
         nextToggle = Time.time;
         isMoving = true;
@@ -31,34 +35,31 @@ public class ShotgunGuy : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         
         FindDirection();
         Toggle();
 
         if(isMoving) {
             Move();
-        } else {
+        } else if (IsInScreen()) {
             Attack();
         }
-        Rotate();
-        Debug.DrawLine(transform.position, player.position, Color.green);
-        
+        Rotate();        
     }
 
-    private void FindDirection(){
+    private void FindDirection() {
         direction = (player.position - transform.position).normalized;
 
-        dir.x=player.position.x+bulletSpread;
-        dir.y=player.position.y+bulletSpread;
-        dir.z=0;
-        directionL1 =(dir-transform.position).normalized;
+        dir.x = player.position.x+bulletSpread;
+        dir.y = player.position.y+bulletSpread;
+        dir.z = 0;
+        directionL1 = (dir-transform.position).normalized;
 
-        dir.x=player.position.x+(2*bulletSpread);
-        dir.y=player.position.y+(2*bulletSpread);
-        dir.z=0;
-        directionL2 =(dir-transform.position).normalized;
+        dir.x = player.position.x+(2*bulletSpread);
+        dir.y = player.position.y+(2*bulletSpread);
+        dir.z = 0;
+        directionL2 = (dir-transform.position).normalized;
 
         dir.x=player.position.x-bulletSpread;
         dir.y=player.position.y-bulletSpread;
@@ -70,22 +71,26 @@ public class ShotgunGuy : MonoBehaviour
         dir.z=0;
         directionR2 =(dir-transform.position).normalized;   
     }
+
     private void Move() {
         transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
     }
+
     private void Rotate() {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
+
     private void Toggle() {
         if(Time.time > nextToggle) {
             isMoving = !isMoving;
             nextToggle = Time.time + movementInterval;
         }
     }
-     private void Attack() {
-         timeToNextShot -= Time.fixedDeltaTime;
-        if(timeToNextShot <= 0) {
+
+    private void Attack() {
+        timeToNextShot -= Time.fixedDeltaTime;
+        if (timeToNextShot <= 0) {
             timeToNextShot = 1f / fireRate;
             Bullet bullet = Instantiate<Bullet>(bulletPrefab, transform.position, Quaternion.identity);
             bullet.speed = 5f;
@@ -101,8 +106,17 @@ public class ShotgunGuy : MonoBehaviour
             bulletR1.direction = directionR1;
             Bullet bulletR2 = Instantiate<Bullet>(bulletPrefab, transform.position, Quaternion.identity);
             bulletR2.speed = 5f;
-            bulletR2.direction = directionR2;
-        
+            bulletR2.direction = directionR2; 
         }
+    }
+
+    private bool IsInScreen() {
+        if(Mathf.Abs(transform.position.x) < xLimit) {
+            if(Mathf.Abs(transform.position.y) < yLimit) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }
