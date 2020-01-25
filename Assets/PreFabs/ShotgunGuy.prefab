@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5048542394579550262}
   m_Layer: 0
   m_Name: ShotgunGuy
-  m_TagString: Untagged
+  m_TagString: shotgunGuy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   movementInterval: 2
   timeToNextShot: 0
   bulletSpread: 1
-  bulletPrefab: {fileID: 828340619038475251, guid: 60e62986bc987f24dad4765790c4cfc1,
+  bulletPrefab: {fileID: 5309237823353168083, guid: 60e62986bc987f24dad4765790c4cfc1,
     type: 3}
 --- !u!50 &5048542394579550261
 Rigidbody2D:

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - enemy
   - bullet
+  - shotgunGuy
+  - healthPack
   layers:
   - Default
   - TransparentFX
