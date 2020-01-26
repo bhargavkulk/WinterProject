@@ -117,21 +117,21 @@ public class PlayerManager : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.tag == "bullet"){
             Bullet bullet = other.gameObject.GetComponent<Bullet>();
-            if(bullet.isDeflected == false)
-            {
+            if(!bullet.isDeflected || !isDashing) {
                 health-= bulletHealthDecrease;
                 healthBar.UpdateBar(health, 100f);
-                if(health == 0f)
-                {
+                if(health == 0f) {
                     GameOver();
                 }
             }
         }
     }
+
     private void GameOver(){
         FindObjectOfType<AudioManager>().Play("Died");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+    
     IEnumerator AttackTime() {
         yield return new WaitForSeconds(1f);
     }
