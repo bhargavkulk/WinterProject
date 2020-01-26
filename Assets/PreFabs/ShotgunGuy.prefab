@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6490555719639767833}
   m_Layer: 0
   m_Name: ShotgunGuy
-  m_TagString: enemy
+  m_TagString: shotgunGuy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,7 +83,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &6490555719639767834
+--- !u!114 &5048542394579550260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5048542394579550263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40271b2e5c470d44be5ad5bde0b39be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  speed: 1
+  fireRate: 1
+  movementInterval: 2
+  timeToNextShot: 0
+  bulletSpread: 1
+  bulletPrefab: {fileID: 5309237823353168083, guid: 60e62986bc987f24dad4765790c4cfc1,
+    type: 3}
+--- !u!50 &5048542394579550261
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0

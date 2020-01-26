@@ -7,8 +7,8 @@ public class Bullet : MonoBehaviour {
     public float speed = 0;
     public bool isDeflected;
     public static float enemy1count = 0f;
-
-
+    public HealthSpawn healthPack;
+  
     void Start() {
         isDeflected = false;    
     }
@@ -22,6 +22,11 @@ public class Bullet : MonoBehaviour {
             FindObjectOfType<AudioManager>().Play("Kill");
             Destroy(other.gameObject);
             enemy1count = enemy1count + 1;
+        }
+        if(other.gameObject.tag == "shotgunGuy" && isDeflected) {
+            FindObjectOfType<AudioManager>().Play("Kill");
+            Instantiate(healthPack, (Vector2)other.transform.position, Quaternion.identity);
+            Destroy(other.gameObject);
         }
     }
 

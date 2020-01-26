@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour {
     public float health = 100f;
     public float bulletHealthDecrease = 5f;
     public SimpleHealthBar healthBar;
+    public HealthSpawn healthPack;
+    public float healthIncrease = 30f;
 
     public static float count2;
 
@@ -103,8 +105,13 @@ public class PlayerManager : MonoBehaviour {
             if(other.gameObject.tag == "enemy") {
                 Destroy(other.gameObject);
                 FindObjectOfType<AudioManager>().Play("Kill");
+
                 count2++;
-            } else if(other.gameObject.tag == "bullet") {
+            } else if (other.gameObject.tag == "shotgunGuy") {
+                FindObjectOfType<AudioManager>().Play("Kill");
+                Instantiate(healthPack, (Vector2)other.transform.position, Quaternion.identity);
+                Destroy(other.gameObject);
+            } else if (other.gameObject.tag == "bullet") {
                 health+= bulletHealthDecrease;
                 healthBar.UpdateBar(health, 100f);
                 Bullet bullet = other.gameObject.GetComponent<Bullet>();
@@ -124,6 +131,13 @@ public class PlayerManager : MonoBehaviour {
                     GameOver();
                 }
             }
+        }
+        else if(other.gameObject.tag == "healthPack")
+        {
+            health += healthIncrease;
+            health = Mathf.Min(health,100f);
+            healthBar.UpdateBar(health,100f);
+            Destroy(other.gameObject);
         }
     }
 
