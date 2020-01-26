@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour {
             Destroy(other.gameObject);
             enemy1count = enemy1count + 1;
         }
-        if(other.gameObject.tag == "shotgunGuy" && isDeflected) {
+        if(other.gameObject.tag == "shotgunguy" && isDeflected) {
             FindObjectOfType<AudioManager>().Play("Kill");
             Instantiate(healthPack, (Vector2)other.transform.position, Quaternion.identity);
             Destroy(other.gameObject);

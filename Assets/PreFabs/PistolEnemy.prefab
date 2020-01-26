@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  speed: 1
+  speed: 2
   fireRate: 1
   movementInterval: 2
   timeToNextShot: 0

@@ -103,12 +103,12 @@ public class PlayerManager : MonoBehaviour {
         var currTriggerList = attackCollider.TriggerList;
         foreach (var other in attackCollider.TriggerList) {
             if(other.gameObject.tag == "enemy") {
+                print("here1");
                 Destroy(other.gameObject);
                 FindObjectOfType<AudioManager>().Play("Kill");
-
-                count2++;
-            } else if (other.gameObject.tag == "shotgunGuy") {
+            } else if (other.gameObject.tag == "shotgunguy") {
                 FindObjectOfType<AudioManager>().Play("Kill");
+                print("here2");
                 Instantiate(healthPack, (Vector2)other.transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
             } else if (other.gameObject.tag == "bullet") {
@@ -144,9 +144,5 @@ public class PlayerManager : MonoBehaviour {
     private void GameOver(){
         FindObjectOfType<AudioManager>().Play("Died");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
-    
-    IEnumerator AttackTime() {
-        yield return new WaitForSeconds(1f);
     }
 }
